@@ -1,2 +1,3 @@
-# CCM-Project
-## Author: Geyi Zhang, Zheng, Li, Alice Liu
+# Computational Cognitive Modeling Project
+## Deep Reinforcement Learning for Video Game
+Author: Geyi Zhang, Zheng, Li, Alice Liu
