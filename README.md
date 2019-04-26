@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Investigating Human Priors for Playing Video Games ##
 #### In ICML 2018 [[Project Website]](https://rach0012.github.io/humanRL_website/) 
 [Rachit Dubey](http://cocosci.berkeley.edu/rachit/), [Pulkit Agrawal](https://people.eecs.berkeley.edu/~pulkitag/), [Deepak Pathak](https://people.eecs.berkeley.edu/~pathak/), [Thomas L. Griffiths](http://cocosci.berkeley.edu/tom/tom.php), [Alexei A. Efros](https://people.eecs.berkeley.edu/~efros/)<br/>
@@ -99,3 +100,6 @@ Set the following in your code before usage:
 os.putenv('SDL_VIDEODRIVER', 'fbcon')
 os.environ["SDL_VIDEODRIVER"] = "dummy"
 ```
+=======
+# CCM_Project
+>>>>>>> 2ec927db8eaa965ba13eec7b96fe88b3f6cf849c
