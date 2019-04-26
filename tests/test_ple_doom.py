@@ -28,10 +28,10 @@ class MyTestCase(unittest.TestCase):
             obs = p.getScreenRGB()
             reward = p.act(agent.pickAction(reward,obs))
 
-    def test_doom(self):
-        from ple.games.doom import Doom
-        game = Doom()
-        self.run_a_game(game)
+    # def test_doom(self):
+    #     from ple.games.doom import Doom
+    #     game = Doom()
+    #     self.run_a_game(game)
 
 if __name__ == "__main__":
     nose.runmodule()
