@@ -36,8 +36,9 @@ class MyTestCase(unittest.TestCase):
         for i in range(NUM_STEPS):
             obs = p.getScreenRGB()
             reward = p.act(agent.pickAction(reward,obs))
-
-    def test_catcher(self):
+        input()
+        
+    def test_original(self):
         from ple.games.originalgame import originalGame
         game = originalGame()
         self.run_a_game(game)

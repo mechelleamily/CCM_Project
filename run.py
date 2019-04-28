@@ -32,12 +32,12 @@ class MyTestCase(unittest.TestCase):
         agent = NaiveAgent(p.getActionSet())
         p.init()
         reward = p.act(p.NOOP)
-        
         for i in range(NUM_STEPS):
             obs = p.getScreenRGB()
             reward = p.act(agent.pickAction(reward,obs))
+        input()
 
-    def test_catcher(self):
+    def test_new(self):
         from ple.games.newgame import newgame
         game = newgame()
         self.run_a_game(game)
