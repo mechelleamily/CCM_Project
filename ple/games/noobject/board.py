@@ -103,7 +103,7 @@ class Board(object):
         return 0
 
     def populateMap(self):
-        self.map = np.loadtxt("map_3.txt", dtype='i', delimiter=',') #use numpy for python3
+        self.map = np.loadtxt("maps/map_3.txt", dtype='i', delimiter=',') #use numpy for python3
 
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
