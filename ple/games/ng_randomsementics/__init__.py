@@ -2,7 +2,7 @@ __author__ = 'Geyi Zhang'
 import pygame
 import sys
 from pygame.constants import K_LEFT, K_RIGHT, K_SPACE, K_UP, K_DOWN, QUIT, KEYDOWN
-from .board import Board
+from board import Board
 #from ..base import base
 #from ple.games import base
 from ple.games.base.pygamewrapper import PyGameWrapper

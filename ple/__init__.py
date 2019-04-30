@@ -1,1 +1,1 @@
-from ple import PLE
+from .ple import PLE

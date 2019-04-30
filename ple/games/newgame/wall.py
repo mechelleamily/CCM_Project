@@ -1,5 +1,5 @@
-__author__ = 'Batchu Vishal'
-from onBoard import OnBoard
+__author__ = 'Geyi Zhang'
+from .onBoard import OnBoard
 import pygame
 
 '''

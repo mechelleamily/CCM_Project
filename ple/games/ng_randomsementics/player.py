@@ -1,5 +1,5 @@
 __author__ = 'Geyi Zhang'
-from .person import Person
+from person import Person
 
 '''
 This class defines our player.

@@ -1,18 +1,17 @@
 __author__ = 'Geyi Zhang'
-
-import pygame
 from onBoard import OnBoard
+import pygame
 
 '''
-This class defines all our ladders in the game.
-Currently not much is done here, but we can add features such as ladder climb sounds etc here
+This class defines all our walls in the game.
+Currently not much is done here, but we can add traps to certain walls such as spiked walls etc to damage the player
 '''
 
 
-class Ladder(OnBoard):
+class Wall(OnBoard):
 
     def __init__(self, raw_image, position):
-        super(Ladder, self).__init__(raw_image, position)
+        super(Wall, self).__init__(raw_image, position)
 
     # Update the ladder image
     def updateImage(self, raw_image):
