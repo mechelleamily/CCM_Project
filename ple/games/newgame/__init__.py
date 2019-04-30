@@ -1,13 +1,14 @@
 __author__ = 'Geyi Zhang'
 import pygame
 import sys
-from pygame.constants import K_a, K_d, K_SPACE, K_w, K_s, QUIT, KEYDOWN
-from .board import Board
+from pygame.constants import K_LEFT, K_RIGHT, K_SPACE, K_UP, K_DOWN, QUIT, KEYDOWN
+from board import Board
 #from ..base import base
 #from ple.games import base
 from ple.games.base.pygamewrapper import PyGameWrapper
 import numpy as np
 import os
+
 
 
 class newgame(PyGameWrapper):
@@ -23,13 +24,13 @@ class newgame(PyGameWrapper):
 		self.width = 230
 		self.status = 2
 		actions = {
-			"left": K_a,
-			"right": K_d,
-			"jump": K_SPACE,
-			"up": K_w,
-			"down": K_s
+			"left": K_LEFT,
+			"right": K_RIGHT,
+			"jump": K_UP,
+			"up": K_UP,
+			"down": K_DOWN
 		}
-
+		self.datafile = open(r"datafile.txt","w") 
 		PyGameWrapper.__init__(
 			self, self.width, self.height, actions=actions)
 
@@ -43,10 +44,10 @@ class newgame(PyGameWrapper):
 		self._dir = os.path.dirname(os.path.abspath(__file__))
 
 		self.IMAGES = {
-			"right": pygame.image.load(os.path.join(self._dir, 'assets/still.png')),
-			"right2": pygame.image.load(os.path.join(self._dir, 'assets/still.png')),
-			"left": pygame.image.load(os.path.join(self._dir, 'assets/still.png')),
-			"left2": pygame.image.load(os.path.join(self._dir, 'assets/still.png')),
+			"right": pygame.image.load(os.path.join(self._dir, 'assets/right1.png')),
+			"right2": pygame.image.load(os.path.join(self._dir, 'assets/right1.png')),
+			"left": pygame.image.load(os.path.join(self._dir, 'assets/left1.png')),
+			"left2": pygame.image.load(os.path.join(self._dir, 'assets/left1.png')),
 			"still": pygame.image.load(os.path.join(self._dir, 'assets/still.png'))
 		}
 
@@ -109,8 +110,9 @@ class newgame(PyGameWrapper):
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
-
+			position = str(self.newGame.Players[0].getPosition()[0]) + ',' + str(self.newGame.Players[0].getPosition()[1])
 			if event.type == KEYDOWN:
+				self.datafile.write(position+' down\n')
 				# Get the ladders collided with the player
 				self.laddersCollidedExact = self.newGame.Players[
 					0].checkCollision(self.ladderGroup)
@@ -126,6 +128,7 @@ class newgame(PyGameWrapper):
 						self.newGame.Players[0].currentJumpSpeed = 7
 
 				if event.key == self.actions["right"]:
+					self.datafile.write(position+' right\n')
 					if self.newGame.direction != 4:
 						self.newGame.direction = 4
 						self.newGame.cycles = -1  # Reset cycles
@@ -147,6 +150,7 @@ class newgame(PyGameWrapper):
 														 -self.newGame.Players[0].getSpeed(), 15, 15)
 
 				if event.key == self.actions["left"]:
+					self.datafile.write(position+' left\n')
 					if self.newGame.direction != 3:
 						self.newGame.direction = 3
 						self.newGame.cycles = -1  # Reset cycles
@@ -170,6 +174,7 @@ class newgame(PyGameWrapper):
 				# If we are on a ladder, then we can move up
 				if event.key == self.actions[
                         "up"] and self.newGame.Players[0].onLadder:
+					self.datafile.write(position+' up\n')
 					self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
 													 -self.newGame.Players[0].getSpeed() / 2, 15, 15)
 					if len(self.newGame.Players[0].checkCollision(self.ladderGroup)) == 0 or len(
@@ -180,6 +185,7 @@ class newgame(PyGameWrapper):
 				# If we are on a ladder, then we can move down
 				if event.key == self.actions[
                         "down"] and self.newGame.Players[0].onLadder:
+					self.datafile.write(position+' down\n')
 					self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
 													 self.newGame.Players[0].getSpeed() / 2, 15, 15)
 
@@ -200,11 +206,12 @@ class newgame(PyGameWrapper):
 
 		# Check if you have reached the princess
 		self.status = self.newGame.checkVictory(self.status)
+		
 
 if __name__ == "__main__":
 	pygame.init()
 	# Instantiate the Game class and run the game
-	game = NewGame()
+	game = newgame()
 	game.screen = pygame.display.set_mode(game.getScreenDims(), 0, 32)
 	game.clock = pygame.time.Clock()
 	game.rng = np.random.RandomState(24)
@@ -213,5 +220,5 @@ if __name__ == "__main__":
 	while True:
 		dt = game.clock.tick_busy_loop(30)
 		game.step(dt)
-		#print(game.game_over())
+		# print(game.game_over())
 		pygame.display.update()
