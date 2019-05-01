@@ -1,0 +1,4 @@
+pygame
+gym-ple
+tensorflow
+pillow
