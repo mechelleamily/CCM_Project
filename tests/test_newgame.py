@@ -25,26 +25,11 @@ class MyTestCase(unittest.TestCase):
         from ple.games.newgame import newgame
         game = newgame()
         self.run_a_game(game)    
-
-    def test_noaffordance(self):
-        from ple.games.noaffordance import noaffordance
-        game = noaffordance()
-        self.run_a_game(game)   
-
-    def test_nosemantics(self):
-        from ple.games.nosemantics import nosemantics
-        game = nosemantics()
-        self.run_a_game(game)    
-
-    def test_nosimilarity(self):
-        from ple.games.nosimilarity import nosimilarity
-        game = nosimilarity()
-        self.run_a_game(game)  
-
-    def test_originalGame(self):
-        from ple.games.originalgame import originalGame
-        game = originalGame()
-        self.run_a_game(game)  
+    
+    def test_random(self):
+        from ple.games.randomsemantics import randomsemantics
+        game = randomsemantics()
+        self.run_a_game(game)
 
 if __name__ == "__main__":
     nose.runmodule()

@@ -32,7 +32,7 @@ class Board(object):
 
         self.IMAGES = {
             "still": pygame.image.load(os.path.join(_dir, 'assets/still.png')).convert_alpha(),
-            "princess": pygame.image.load(os.path.join(_dir, 'assets/treasure_1.png')).convert_alpha(),
+            "princess": pygame.image.load(os.path.join(_dir, 'assets/princess.png')).convert_alpha(),
             "enemy1": pygame.image.load(os.path.join(_dir, 'assets/enemy1.png')).convert_alpha(),
             "enemy2": pygame.image.load(os.path.join(_dir, 'assets/fire.png')).convert_alpha(),
             "wood_block": pygame.image.load(os.path.join(_dir, 'assets/wood_block.png')).convert_alpha(),
