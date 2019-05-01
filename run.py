@@ -41,6 +41,11 @@ class MyTestCase(unittest.TestCase):
         from ple.games.newgame import newgame
         game = newgame()
         self.run_a_game(game)
+    
+    def test_random(self):
+        from ple.games.randomsemantics import randomsemantics
+        game = randomsemantics()
+        self.run_a_game(game)
 
 if __name__ == "__main__":
     nose.runmodule()
