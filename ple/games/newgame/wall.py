@@ -1,5 +1,5 @@
 __author__ = 'Geyi Zhang'
-from .onBoard import OnBoard
+from  onBoard import OnBoard
 import pygame
 
 '''

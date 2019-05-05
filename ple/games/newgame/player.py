@@ -1,5 +1,5 @@
 __author__ = 'Geyi Zhang'
-from .person import Person
+from  person import Person
 
 '''
 This class defines our player.
@@ -15,8 +15,8 @@ class Player(Person):
         self.isJumping = 0
         self.onLadder = 0
         self.currentJumpSpeed = 0
-        self.__gravity = 0.7  # Gravity affecting the jump velocity of the player
-        self.__speed = 10  # Movement speed of the player
+        self.__gravity = 0.65 # Gravity affecting the jump velocity of the player
+        self.__speed = 11  # Movement speed of the player
 
     # Getters and Setterss
     def getSpeed(self):

@@ -1,7 +1,7 @@
 __author__ = 'Geyi Zhang'
 import pygame
 import os
-from .onBoard import OnBoard
+from  onBoard import OnBoard
 
 
 class enemy(OnBoard):

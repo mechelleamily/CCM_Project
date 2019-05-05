@@ -4,10 +4,10 @@ import math
 import sys
 import os
 import numpy as np
-from .person import Person
-from .onBoard import OnBoard
-from .enemy import enemy
-from .player import Player
+from person import Person
+from onBoard import OnBoard
+from enemy import enemy
+from player import Player
 
 class Board(object):
     '''
@@ -101,7 +101,7 @@ class Board(object):
         return 0
 
     def populateMap(self):
-        self.map = np.loadtxt("maps/map.txt", dtype='i', delimiter=',') #use numpy for python3
+        self.map = np.loadtxt(os.path.join(self._dir, 'map.txt'), dtype='i', delimiter=',') #use numpy for python3
 
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
