@@ -47,7 +47,7 @@ class newgame(PyGameWrapper):
 		self._dir = os.path.dirname(os.path.abspath(__file__))
 		print(self._dir)
 		self.datafile = open(self._dir+"\datafile.txt","a") 
-		self.datafile.write(str(datetime.datetime.now())+'\n')
+		self.datafile.write(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))+"- "*30+'\n')
 
 		self.IMAGES = {
 			"right": pygame.image.load(os.path.join(self._dir, 'assets/right1.png')),
@@ -112,7 +112,10 @@ class newgame(PyGameWrapper):
 			self.laddersCollidedBelow,
 			self.wallsCollidedBelow,
 			self.wallsCollidedAbove)
-
+		
+		pos_x, pos_y = self.newGame.Players[0].getPosition()[0],self.newGame.Players[0].getPosition()[1]
+		pos_x, pos_y = format(pos_x,'.2f'),format(pos_y,'.2f')
+		position = str(pos_x) + ',' + str(pos_y)
 		for event in pygame.event.get():
 			# Exit to desktop
 			if event.type == QUIT:
@@ -120,9 +123,10 @@ class newgame(PyGameWrapper):
 				sys.exit()
 			
 			if event.type == KEYDOWN:
-				pos_x, pos_y = self.newGame.Players[0].getPosition()[0],self.newGame.Players[0].getPosition()[1]
-				position = str(pos_x) + ',' + str(pos_y)
-				if event.key != self.actions['undo']:
+				# pos_x, pos_y = self.newGame.Players[0].getPosition()[0],self.newGame.Players[0].getPosition()[1]
+				# pos_x, pos_y = format(pos_x,'.2f'),format(pos_y,'.2f')
+				# position = str(pos_x) + ',' + str(pos_y)
+				if event.key != self.actions['undo'] and self.wallsCollidedBelow:
 					self.prev_position.append(self.newGame.Players[0].getPosition())
 					if len(self.prev_position) >= 3:
 						self.prev_position.pop(0)
@@ -204,6 +208,7 @@ class newgame(PyGameWrapper):
 													 self.newGame.Players[0].getSpeed() / 2, 15, 15)
 				
 				if (event.key == self.actions['undo']):
+					self.datafile.write(str(self.numactions)+' '+position+' undo\n')
 					print(self.prev_position)
 					if len(self.prev_position) != 0 :
 						self.newGame.Players[0].setPosition(self.prev_position[-1])
@@ -225,9 +230,13 @@ class newgame(PyGameWrapper):
 			self.newGame.Players[0], self.enemyGroup2, True)
 		self.newGame.enemyCheck2(enemysCollected2)
 		self.newGame.enemyCheck(enemysCollected)
-
+		if self.newGame.lives == 0:
+			self.datafile.write(str(self.numactions)+' '+position+' death\n')
+			self.newGame.lives = 1 
 		# Check if you have reached the princess
 		self.status = self.newGame.checkVictory(self.status)
+		if self.status == 1:
+			self.datafile.write(str(self.numactions)+' '+position+' win\n')
 		
 
 if __name__ == "__main__":
@@ -240,7 +249,7 @@ if __name__ == "__main__":
 	game.init()
 
 	while (game.status != 1):
-		dt = game.clock.tick_busy_loop(30)
+		dt = game.clock.tick_busy_loop(25)
 		game.step(dt)
 		# print(game.game_over())
 		pygame.display.update()
