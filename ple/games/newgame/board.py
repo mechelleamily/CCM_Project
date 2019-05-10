@@ -27,8 +27,8 @@ class Board(object):
         self.direction = 0
         self._dir = _dir
         
-        self.playerPosition = (120, 190)
-        self.princessPosition = (30,47)
+        self.playerPosition = (240, 300)
+        self.princessPosition = (40,65)
 
         self.IMAGES = {
             "still": pygame.image.load(os.path.join(_dir, 'assets/still.png')).convert_alpha(),
@@ -101,7 +101,7 @@ class Board(object):
         return 0
 
     def populateMap(self):
-        self.map = np.loadtxt(os.path.join(self._dir, 'map.txt'), dtype='i', delimiter=',') #use numpy for python3
+        self.map = np.loadtxt(os.path.join(self._dir, 'map1.txt'), dtype='i', delimiter=',') #use numpy for python3
 
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):

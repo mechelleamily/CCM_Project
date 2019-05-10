@@ -8,6 +8,8 @@ from board import Board
 from ple.games.base.pygamewrapper import PyGameWrapper
 import numpy as np
 import os
+import datetime
+import time
 
 
 
@@ -20,17 +22,18 @@ class newgame(PyGameWrapper):
 		None
 
 		"""
-		self.height = 230 #modify height accordingly based on how long the game level is
-		self.width = 230
-		self.status = 2
+		self.height = 345 #modify height accordingly based on how long the game level is
+		self.width = 345
+		self.status = 2   # (2 : still alive, 1 : win, 0: dead/lose)
 		actions = {
 			"left": K_LEFT,
 			"right": K_RIGHT,
 			"jump": K_UP,
 			"up": K_UP,
-			"down": K_DOWN
+			"down": K_DOWN,
+			"undo": K_SPACE
 		}
-		self.datafile = open(r"datafile.txt","w") 
+		
 		PyGameWrapper.__init__(
 			self, self.width, self.height, actions=actions)
 
@@ -42,6 +45,9 @@ class newgame(PyGameWrapper):
 		}
 		self.allowed_fps = 30
 		self._dir = os.path.dirname(os.path.abspath(__file__))
+		print(self._dir)
+		self.datafile = open(self._dir+"\datafile.txt","a") 
+		self.datafile.write(str(datetime.datetime.now())+'\n')
 
 		self.IMAGES = {
 			"right": pygame.image.load(os.path.join(self._dir, 'assets/right1.png')),
@@ -50,6 +56,8 @@ class newgame(PyGameWrapper):
 			"left2": pygame.image.load(os.path.join(self._dir, 'assets/left1.png')),
 			"still": pygame.image.load(os.path.join(self._dir, 'assets/still.png'))
 		}
+
+		self.prev_position = []
 
 	def init(self):
 
@@ -110,9 +118,15 @@ class newgame(PyGameWrapper):
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
-			position = str(self.newGame.Players[0].getPosition()[0]) + ',' + str(self.newGame.Players[0].getPosition()[1])
+			
 			if event.type == KEYDOWN:
-				self.datafile.write(position+' down\n')
+				pos_x, pos_y = self.newGame.Players[0].getPosition()[0],self.newGame.Players[0].getPosition()[1]
+				position = str(pos_x) + ',' + str(pos_y)
+				if event.key != self.actions['undo']:
+					self.prev_position.append(self.newGame.Players[0].getPosition())
+					if len(self.prev_position) >= 3:
+						self.prev_position.pop(0)
+						
 				# Get the ladders collided with the player
 				self.laddersCollidedExact = self.newGame.Players[
 					0].checkCollision(self.ladderGroup)
@@ -128,7 +142,7 @@ class newgame(PyGameWrapper):
 						self.newGame.Players[0].currentJumpSpeed = 7
 
 				if event.key == self.actions["right"]:
-					self.datafile.write(position+' right\n')
+					self.datafile.write(str(self.numactions)+' '+position+' right\n')
 					if self.newGame.direction != 4:
 						self.newGame.direction = 4
 						self.newGame.cycles = -1  # Reset cycles
@@ -150,7 +164,7 @@ class newgame(PyGameWrapper):
 														 -self.newGame.Players[0].getSpeed(), 15, 15)
 
 				if event.key == self.actions["left"]:
-					self.datafile.write(position+' left\n')
+					self.datafile.write(str(self.numactions)+' '+position+' left\n')
 					if self.newGame.direction != 3:
 						self.newGame.direction = 3
 						self.newGame.cycles = -1  # Reset cycles
@@ -174,20 +188,28 @@ class newgame(PyGameWrapper):
 				# If we are on a ladder, then we can move up
 				if event.key == self.actions[
                         "up"] and self.newGame.Players[0].onLadder:
-					self.datafile.write(position+' up\n')
+					self.datafile.write(str(self.numactions)+' '+position+' up\n')
 					self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
 													 -self.newGame.Players[0].getSpeed() / 2, 15, 15)
 					if len(self.newGame.Players[0].checkCollision(self.ladderGroup)) == 0 or len(
 							self.newGame.Players[0].checkCollision(self.wallGroup)) != 0:
 						self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
 														 self.newGame.Players[0].getSpeed() / 2, 15, 15)
-
+				
 				# If we are on a ladder, then we can move down
 				if event.key == self.actions[
                         "down"] and self.newGame.Players[0].onLadder:
-					self.datafile.write(position+' down\n')
+					self.datafile.write(str(self.numactions)+' '+position+' down\n')
 					self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
 													 self.newGame.Players[0].getSpeed() / 2, 15, 15)
+				
+				if (event.key == self.actions['undo']):
+					print(self.prev_position)
+					if len(self.prev_position) != 0 :
+						self.newGame.Players[0].setPosition(self.prev_position[-1])
+						self.prev_position.pop()
+		
+
 
 		# Update the player's position and process his jump if he is jumping
 		self.newGame.Players[0].continuousUpdate(
@@ -217,7 +239,7 @@ if __name__ == "__main__":
 	game.rng = np.random.RandomState(24)
 	game.init()
 
-	while True:
+	while (game.status != 1):
 		dt = game.clock.tick_busy_loop(30)
 		game.step(dt)
 		# print(game.game_over())
