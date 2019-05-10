@@ -209,7 +209,7 @@ class newgame(PyGameWrapper):
 				
 				if (event.key == self.actions['undo']):
 					self.datafile.write(str(self.numactions)+' '+position+' undo\n')
-					print(self.prev_position)
+					# print(self.prev_position)
 					if len(self.prev_position) != 0 :
 						self.newGame.Players[0].setPosition(self.prev_position[-1])
 						self.prev_position.pop()
