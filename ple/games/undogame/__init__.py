@@ -1,7 +1,7 @@
 __author__ = 'Geyi Zhang'
 import pygame
 import sys
-from pygame.constants import K_LEFT, K_RIGHT, K_UP, K_DOWN, QUIT, KEYDOWN
+from pygame.constants import K_LEFT, K_RIGHT, K_SPACE, K_UP, K_DOWN, QUIT, KEYDOWN
 from board import Board
 #from ..base import base
 #from ple.games import base
@@ -30,7 +30,8 @@ class newgame(PyGameWrapper):
 			"right": K_RIGHT,
 			"jump": K_UP,
 			"up": K_UP,
-			"down": K_DOWN
+			"down": K_DOWN,
+			"undo": K_SPACE
 		}
 		
 		PyGameWrapper.__init__(
@@ -123,6 +124,13 @@ class newgame(PyGameWrapper):
 				break
 			
 			if event.type == KEYDOWN:
+				# pos_x, pos_y = self.newGame.Players[0].getPosition()[0],self.newGame.Players[0].getPosition()[1]
+				# pos_x, pos_y = format(pos_x,'.2f'),format(pos_y,'.2f')
+				# position = str(pos_x) + ',' + str(pos_y)
+				if event.key != self.actions['undo'] and self.wallsCollidedBelow:
+					self.prev_position.append(self.newGame.Players[0].getPosition())
+					if len(self.prev_position) >= 6:
+						self.prev_position.pop(0)
 						
 				# Get the ladders collided with the player
 				self.laddersCollidedExact = self.newGame.Players[
@@ -200,7 +208,12 @@ class newgame(PyGameWrapper):
 					self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
 													 self.newGame.Players[0].getSpeed() / 2, 15, 15)
 				
-				
+				if (event.key == self.actions['undo']):
+					self.datafile.write(str(self.numactions)+' '+position+' undo\n')
+					# print(self.prev_position)
+					if len(self.prev_position) != 0 :
+						self.newGame.Players[0].setPosition(self.prev_position[-1])
+						self.prev_position.pop()
 		
 
 
